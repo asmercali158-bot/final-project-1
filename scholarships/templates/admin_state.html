@@ -1,0 +1,104 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="so">
+<head>
+    <meta charset="UTF-8">
+    <title>ScholarAI | Admin Analytics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body { background: #050505; font-family: 'Inter', sans-serif; color: white; }
+        .glass-panel {
+            background: rgba(15, 15, 15, 0.7);
+            backdrop-filter: blur(40px);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            border-radius: 24px;
+        }
+        .gold-text { color: #D4AF37; }
+        .font-heavy { font-weight: 900; font-style: italic; text-transform: uppercase; }
+    </style>
+</head>
+<body class="p-8">
+
+    <header class="flex justify-between items-center mb-12">
+        <div>
+            <h1 class="text-3xl font-heavy italic">Admin<span class="gold-text">_Control</span></h1>
+            <p class="text-[10px] text-gray-500 tracking-[0.3em] uppercase">Scholarship Management System v2.4.1</p>
+        </div>
+        <div class="flex gap-4">
+            <a href="/admin/" class="px-6 py-2 border border-[#D4AF37] text-[#D4AF37] rounded-xl text-xs font-bold hover:bg-[#D4AF37] hover:text-black transition">Django Admin</a>
+            <a href="{% url 'dashboard' %}" class="px-6 py-2 bg-[#D4AF37] text-black rounded-xl text-xs font-bold">Back to Site</a>
+        </div>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div class="glass-panel p-6 border-b-4 border-[#D4AF37]">
+            <p class="text-[10px] text-gray-500 uppercase font-heavy">Total Students</p>
+            <h2 class="text-4xl font-heavy italic mt-2">{{ total_students }}</h2>
+        </div>
+        <div class="glass-panel p-6 border-b-4 border-[#22D3EE]">
+            <p class="text-[10px] text-gray-500 uppercase font-heavy">Active Applications</p>
+            <h2 class="text-4xl font-heavy italic mt-2 text-[#22D3EE]">{{ total_applications }}</h2>
+        </div>
+        <div class="glass-panel p-6 border-b-4 border-green-500">
+            <p class="text-[10px] text-gray-500 uppercase font-heavy">Total Revenue</p>
+            <h2 class="text-4xl font-heavy italic mt-2 text-green-500">${{ total_revenue }}</h2>
+        </div>
+        <div class="glass-panel p-6 border-b-4 border-[#EF4444]">
+            <p class="text-[10px] text-gray-500 uppercase font-heavy">Pending Verification</p>
+            <h2 class="text-4xl font-heavy italic mt-2 text-[#EF4444]">{{ pending_verifications }}</h2>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-12 gap-6">
+        <div class="col-span-12 lg:col-span-8 glass-panel p-8">
+            <h3 class="text-[10px] font-heavy text-gray-500 mb-6 tracking-[0.2em] uppercase">/ Application Trends</h3>
+            <canvas id="analyticsChart" height="150"></canvas>
+        </div>
+
+        <div class="col-span-12 lg:col-span-4 glass-panel p-8">
+            <h3 class="text-[10px] font-heavy text-gray-500 mb-6 tracking-[0.2em] uppercase">/ Audit Trail Logs</h3>
+            <div class="space-y-4">
+                {% for log in recent_logs %}
+                <div class="flex items-center gap-4 border-b border-white/5 pb-3">
+                    <div class="w-2 h-2 rounded-full bg-[#D4AF37]"></div>
+                    <div>
+                        <p class="text-[11px] font-bold">{{ log.user.username }} applied to {{ log.scholarship.title|truncatechars:20 }}</p>
+                        <p class="text-[9px] text-gray-600">{{ log.applied_on|timesince }} ago</p>
+                    </div>
+                </div>
+                {% empty %}
+                <p class="text-xs text-gray-600 italic">No recent activities.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('analyticsChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Applications',
+                    data: [12, 19, 30, 45, 60, 85],
+                    borderColor: '#D4AF37',
+                    backgroundColor: 'rgba(212, 175, 55, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#888' } },
+                    x: { grid: { display: false }, ticks: { color: '#888' } }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

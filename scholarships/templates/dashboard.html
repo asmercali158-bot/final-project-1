@@ -1,0 +1,223 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="so">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ScholarAI | Elite Dashboard</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+
+        :root {
+            --gold: #D4AF37;
+            --blue: #22D3EE;
+            --red: #EF4444;
+            --star: #FFFFFF;
+            --bg-dark: #050505;
+        }
+
+        body { margin: 0; background: var(--bg-dark); font-family: 'Inter', sans-serif; color: white; overflow-x: hidden; }
+
+        .glass-panel {
+            background: rgba(15, 15, 15, 0.7);
+            backdrop-filter: blur(40px);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            border-radius: 24px;
+        }
+
+        /* SIDEBAR NAV */
+        .nav-link {
+            display: flex; align-items: center; gap: 15px; padding: 12px 20px;
+            color: #888; font-weight: 700; font-size: 11px; text-transform: uppercase;
+            letter-spacing: 1px; transition: 0.3s; border-radius: 12px;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: var(--gold); background: rgba(212, 175, 55, 0.08);
+            border-left: 3px solid var(--gold);
+        }
+
+        /* HERO SLIDER */
+        .hero-slider {
+            position: relative; width: 100%; height: 420px;
+            border-radius: 35px; overflow: hidden;
+            border: 1px solid rgba(212, 175, 55, 0.15);
+        }
+        .slide {
+            position: absolute; inset: 0; opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+            background-size: cover; background-position: center;
+            display: flex; align-items: center; padding: 60px;
+        }
+        .slide.active { opacity: 1; }
+
+        /* Architecture Background Themes */
+        .bg-gold { background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2000'); }
+        .bg-star { background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2000'); }
+        .bg-blue { background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1464938532347-1940182fa631?q=80&w=2000'); }
+        .bg-red  { background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=2000'); }
+
+        .gold-text { color: var(--gold); }
+        .font-heavy { font-weight: 900; font-style: italic; text-transform: uppercase; }
+
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+        .bot-glow { animation: float 4s infinite ease-in-out; }
+
+        .alert-success { background: rgba(212, 175, 55, 0.1); border: 1px solid var(--gold); color: var(--gold); }
+    </style>
+</head>
+
+<body class="flex min-h-screen p-4 md:p-6 gap-6">
+
+    <aside class="w-72 glass-panel p-8 sticky top-6 h-[92vh] flex flex-col">
+        <div class="flex items-center gap-3 mb-12">
+            <div class="w-6 h-6 border-2 border-[#D4AF37] rotate-45 flex items-center justify-center">
+                <div class="w-2 h-2 bg-[#D4AF37]"></div>
+            </div>
+            <h1 class="text-xl font-heavy italic">Scholar<span class="gold-text">AI</span></h1>
+        </div>
+
+        <nav class="space-y-3 flex-1">
+            <a href="{% url 'dashboard' %}" class="nav-link active"><i class="fas fa-th-large"></i> Dashboard</a>
+            <a href="{% url 'matches' %}" class="nav-link"><i class="fas fa-graduation-cap"></i> Scholarships</a>
+            <a href="{% url 'matches' %}" class="nav-link"><i class="fas fa-layer-group"></i> Matches</a>
+            <a href="{% url 'vault' %}" class="nav-link"><i class="fas fa-vault"></i> Vault</a>
+            <a href="{% url 'update_profile' %}" class="nav-link"><i class="fas fa-cog"></i> Settings</a>
+        </nav>
+
+        <div class="mt-auto">
+             <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="nav-link text-red-500 hover:bg-red-500/10 transition w-full text-left">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+             </form>
+        </div>
+    </aside>
+
+    <main class="flex-1 space-y-8 overflow-y-auto">
+        
+        {% if messages %}
+        <div class="px-4">
+            {% for message in messages %}
+            <div class="p-4 rounded-xl alert-success text-xs font-heavy italic uppercase tracking-widest">
+                <i class="fas fa-check-circle mr-2"></i> {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <header class="flex justify-between items-center px-4">
+            <div class="text-[10px] font-heavy text-gray-600 tracking-[0.4em]">SYSTEM_VERSION: 2.4.1_PRO</div>
+            <div class="flex items-center gap-6">
+                <div class="text-right">
+                    <p class="text-sm font-heavy italic">{{ request.user.username }}</p>
+                    <p class="text-[9px] gold-text font-bold">GPA: {{ profile.gpa }}</p>
+                </div>
+                <div class="w-12 h-12 rounded-2xl border border-[#D4AF37]/30 p-1">
+                    <img src="https://ui-avatars.com/api/?name={{ request.user.username }}&background=D4AF37&color=000" class="w-full h-full rounded-xl">
+                </div>
+            </div>
+        </header>
+
+        <div class="hero-slider">
+            <div class="slide bg-gold active">
+                <div class="max-w-xl">
+                    <h2 class="text-7xl font-heavy leading-[0.85] italic gold-text">ELITE <br>ARCHITECT.</h2>
+                    <p class="mt-4 text-gray-400 italic">"Nidaamku wuxuu si guul leh u helay deeqo ku habboon <span class="gold-text">{{ profile.gpa }} GPA</span>-gaaga."</p>
+                </div>
+            </div>
+            <div class="slide bg-star">
+                <div class="max-w-xl">
+                    <h2 class="text-7xl font-heavy leading-[0.85] italic text-white">STAR <br>SYNC.</h2>
+                    <p class="mt-4 text-gray-400 italic">Verification Status: <span class="gold-text">{{ profile.is_verified|yesno:"Verified,Pending" }}</span></p>
+                </div>
+            </div>
+            <div class="slide bg-blue">
+                <div class="max-w-xl">
+                    <h2 class="text-7xl font-heavy leading-[0.85] italic text-[#22D3EE]">BLUE <br>METRICS.</h2>
+                    <p class="mt-4 text-gray-400 italic">Real-time data synchronization with your interested field: <span class="gold-text">{{ profile.interested_field }}</span></p>
+                </div>
+            </div>
+            <div class="slide bg-red">
+                <div class="max-w-xl">
+                    <h2 class="text-7xl font-heavy leading-[0.85] italic text-[#EF4444]">RED <br>SYSTEM.</h2>
+                    <p class="mt-4 text-gray-400 italic">Priority processing active for {{ request.user.email }}</p>
+                </div>
+            </div>
+
+            <div class="absolute right-12 bottom-12 text-center bot-glow">
+                <div class="w-24 h-24 bg-gradient-to-b from-[#D4AF37] to-[#B8860B] rounded-full flex items-center justify-center shadow-[0_0_50px_rgba(212,175,55,0.4)] mb-3 mx-auto">
+                    <i class="fas fa-robot text-4xl text-black"></i>
+                </div>
+                <p class="text-[10px] font-heavy gold-text uppercase tracking-widest">ScholarAI Assistant</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-12 gap-6">
+            <div class="col-span-12 lg:col-span-8 glass-panel p-8">
+                <h3 class="text-[10px] font-heavy text-gray-500 mb-8 tracking-[0.3em] uppercase italic">/ Application Status</h3>
+                <div class="space-y-8">
+                    {% for app in applications %}
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <p class="text-[11px] font-heavy italic gold-text uppercase">{{ app.scholarship.title|truncatechars:40 }}</p>
+                            <span class="text-[10px] text-gray-400 font-heavy italic">
+                                {% if app.status == 'Accepted' %}100%{% elif app.status == 'Submitted' %}75%{% else %}45%{% endif %}
+                            </span>
+                        </div>
+                        
+                        <div class="h-1.5 bg-white/5 rounded-full overflow-hidden relative">
+                            {% if app.status == 'Accepted' %}
+                                <div class="h-full bg-gradient-to-r from-[#D4AF37] to-[#7C3AED]" style="width: 100%;"></div>
+                            {% elif app.status == 'Submitted' %}
+                                <div class="h-full bg-gradient-to-r from-[#D4AF37] to-[#22D3EE]" style="width: 75%;"></div>
+                            {% else %}
+                                <div class="h-full bg-gradient-to-r from-[#EF4444] to-[#D4AF37]" style="width: 45%;"></div>
+                            {% endif %}
+                        </div>
+                        <div class="flex justify-between">
+                            <p class="text-[9px] text-gray-500 font-heavy uppercase tracking-tighter">Status: <span class="text-white">{{ app.status }}</span></p>
+                            <p class="text-[9px] text-gray-600 font-heavy italic">{{ app.applied_on|date:"M d, Y" }}</p>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="text-center py-10">
+                        <i class="fas fa-folder-open text-gray-800 text-4xl mb-4"></i>
+                        <p class="text-[11px] text-gray-600 italic">Ma jiro codsi deeq oo aad gudbisay weli.</p>
+                        <a href="{% url 'matches' %}" class="text-[10px] gold-text uppercase font-heavy mt-4 inline-block underline">Raadi Deeqo Hada</a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="col-span-12 lg:col-span-4 space-y-6">
+                <div class="glass-panel p-8 text-center border-b-4 border-[#D4AF37]">
+                    <p class="text-[10px] font-heavy text-gray-500 mb-2 uppercase tracking-widest">Total Matches</p>
+                    <h4 class="text-7xl font-heavy italic gold-text">{{ matches.count }}</h4>
+                </div>
+                <div class="glass-panel p-8 flex items-center justify-between border-l-4 border-[#22D3EE]">
+                    <div>
+                        <p class="text-[10px] font-heavy text-gray-500 uppercase tracking-widest">Neural Status</p>
+                        <p class="text-xs font-heavy italic gold-text mt-1 uppercase">Synchronized</p>
+                    </div>
+                    <i class="fas fa-microchip text-2xl text-[#22D3EE]"></i>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let current = 0;
+        const slides = document.querySelectorAll('.slide');
+        setInterval(() => {
+            slides[current].classList.remove('active');
+            current = (current + 1) % slides.length;
+            slides[current].classList.add('active');
+        }, 5000);
+    </script>
+</body>
+</html>

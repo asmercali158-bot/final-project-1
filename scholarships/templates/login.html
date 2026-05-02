@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5 mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div class="glass p-5">
+                <div class="text-center mb-4">
+                    <i class="fas fa-lock fa-3x text-primary mb-3"></i>
+                    <h2 class="fw-bold text-white">Login</h2>
+                    <p class="text-muted small">Ku soo noqo nidaamkaaga AI-ga.</p>
+                </div>
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} small py-2 bg-dark text-white border-primary">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-4">
+                        <input type="text" name="username" class="form-control" placeholder="Username" required>
+                    </div>
+                    <div class="mb-4">
+                        <input type="password" name="password" class="form-control" placeholder="Password" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-launch w-100 rounded-pill py-3">Access Dashboard ⚡</button>
+                </form>
+
+                <div class="text-center mt-4">
+                    <p class="small text-muted">Ma u baahan tahay account? <a href="{% url 'signup' %}" class="text-primary">Sign Up</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

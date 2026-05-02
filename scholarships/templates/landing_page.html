@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScholarAI | Welcome</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Outfit:wght@300;900&display=swap" rel="stylesheet">
+    <style>
+        body { background: #050505; font-family: 'Outfit', sans-serif; color: white; overflow: hidden; }
+        .glow-text { text-shadow: 0 0 20px rgba(212, 175, 55, 0.5); }
+    </style>
+</head>
+<body class="h-screen flex flex-col items-center justify-center relative">
+
+    <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-yellow-600/10 rounded-full blur-[120px]"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-600/10 rounded-full blur-[120px]"></div>
+
+    <div class="relative z-10 text-center space-y-8 px-6">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-xl">
+            <span class="w-2 h-2 rounded-full bg-yellow-500 animate-ping"></span>
+            <span class="text-[10px] font-black tracking-[0.4em] uppercase text-gray-400">Next-Gen Education AI</span>
+        </div>
+
+        <h1 style="font-family: 'Syncopate';" class="text-6xl md:text-8xl font-bold tracking-tighter glow-text">
+            SCHOLAR<span class="text-yellow-500">AI</span>
+        </h1>
+
+        <p class="text-gray-500 max-w-lg mx-auto text-lg font-light leading-relaxed">
+            Ku hel deeqaha waxbarasho ee adduunka adigoo isticmaalaya nidaamka caqliga casriga ah ee ku dhisan <span class="text-white font-bold">Neural Matching.</span>
+        </p>
+
+        <div class="flex flex-col md:flex-row gap-6 justify-center pt-8">
+            <a href="{% url 'signup' %}" class="px-12 py-5 bg-yellow-500 text-black font-black rounded-2xl shadow-[0_0_30px_rgba(212,175,55,0.3)] hover:scale-105 transition-all uppercase tracking-widest">
+                Start Discovery
+            </a>
+            <a href="{% url 'login' %}" class="px-12 py-5 bg-white/5 border border-white/10 backdrop-blur-lg font-black rounded-2xl hover:bg-white/10 transition-all uppercase tracking-widest">
+                Login
+            </a>
+        </div>
+    </div>
+
+    <div class="absolute bottom-10 text-[10px] text-gray-700 font-bold uppercase tracking-[0.8em]">
+        Neural System V2.06 • Secured by Quantum
+    </div>
+
+</body>
+</html>

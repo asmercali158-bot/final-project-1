@@ -1,0 +1,46 @@
+<div class="container mt-4">
+    <h2 class="text-white mb-4"><i class="fas fa-chart-line text-blue-500"></i> ScholarAI Analytics</h2>
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="bg-dark p-3 rounded border-start border-blue-500 border-4 shadow">
+                <p class="text-gray-400 small mb-1">TOTAL SCHOLARS</p>
+                <h3 class="text-white">{{ total_students }}</h3>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="bg-dark p-3 rounded border-start border-green-500 border-4 shadow">
+                <p class="text-gray-400 small mb-1">APPLICATIONS</p>
+                <h3 class="text-white">{{ total_apps }}</h3>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="bg-dark p-3 rounded border-start border-purple-500 border-4 shadow">
+                <p class="text-gray-400 small mb-1">ACTIVE LISTINGS</p>
+                <h3 class="text-white">{{ total_scholarships }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-dark p-4 rounded shadow">
+        <h5 class="text-white mb-3">Most In-Demand Fields</h5>
+        <table class="table table-dark table-hover">
+            <thead>
+                <tr>
+                    <th>Scholarship</th>
+                    <th>Field</th>
+                    <th>Applications</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in top_scholarships %}
+                <tr>
+                    <td>{{ s.title }}</td>
+                    <td>{{ s.field_of_study }}</td>
+                    <td><span class="badge bg-blue-600">{{ s.num_apps }}</span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

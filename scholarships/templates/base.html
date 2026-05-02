@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScholarAI | Quantum V2.0</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        body { 
+            background: #050505; 
+            font-family: 'Outfit', sans-serif; 
+            color: #ffffff;
+            min-height: 100vh;
+        }
+        /* Glassmorphism Effect */
+        .glass {
+            background: rgba(15, 15, 15, 0.8);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .text-gold { color: #D4AF37; }
+        .bg-gold { background-color: #D4AF37; }
+        .border-gold { border-color: #D4AF37; }
+        .glow-gold { box-shadow: 0 0 20px rgba(212, 175, 55, 0.3); }
+    </style>
+</head>
+<body>
+    <nav class="glass sticky top-0 z-50 px-8 py-4 flex justify-between items-center border-b border-white/5">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-gold rounded-xl flex items-center justify-center glow-gold">
+                <i class="fas fa-brain text-black text-lg"></i>
+            </div>
+            <h1 class="text-2xl font-black tracking-tighter uppercase italic">
+                Scholar<span class="text-gold">AI</span>
+            </h1>
+        </div>
+        
+        <div class="hidden md:flex gap-8 text-[11px] font-bold uppercase tracking-[0.25em] text-gray-400">
+            <a href="{% url 'dashboard' %}" class="hover:text-gold transition-all">Network</a>
+            <a href="{% url 'vault' %}" class="hover:text-gold transition-all">Vault</a>
+            <a href="{% url 'update_profile' %}" class="hover:text-gold transition-all">Calibrate</a>
+            <a href="{% url 'logout' %}" class="text-red-500 hover:opacity-70 transition-all">Disconnect</a>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <span class="text-[10px] text-gray-500 font-bold uppercase hidden sm:block">System Status: <span class="text-green-500">Active</span></span>
+            <div class="w-10 h-10 rounded-full border border-gold/30 p-0.5">
+                <img src="https://ui-avatars.com/api/?name={{ user.username }}&background=D4AF37&color=000" class="rounded-full">
+            </div>
+        </div>
+    </nav>
+
+    <main class="relative">
+        {% block content %}{% endblock %}
+    </main>
+
+    {% if messages %}
+    <div class="fixed top-24 right-10 z-[100] space-y-4">
+        {% for message in messages %}
+        <div class="glass border-l-4 border-gold p-4 rounded-2xl shadow-2xl min-w-[300px] animate-bounce">
+            <p class="text-xs font-bold uppercase tracking-widest text-gold">System Notification</p>
+            <p class="text-sm mt-1 text-gray-200">{{ message }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</body>
+</html>

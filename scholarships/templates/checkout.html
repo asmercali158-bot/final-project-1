@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto px-6 mt-12 mb-20 relative">
+    
+    <div class="mb-12">
+        <h1 class="text-4xl font-extrabold text-white tracking-tighter">
+            FINAL <span class="text-gold italic">SUBMISSION</span>
+        </h1>
+        <p class="text-gray-400 mt-2">Fadlan dib u eeg macluumaadkaaga ka hor intaanad codsiga xareyn.</p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-8">
+        
+        <div class="md:col-span-2 space-y-6">
+            <div class="glass p-8 rounded-[40px] border border-gold/20 relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-6 opacity-10 text-6xl text-gold">🎓</div>
+                <h2 class="text-gold font-bold uppercase tracking-widest text-xs mb-4">Target Scholarship</h2>
+                <h3 class="text-3xl font-bold text-white mb-2">{{ scholarship.title }}</h3>
+                <p class="text-gray-400 leading-relaxed">{{ scholarship.description|truncatewords:30 }}</p>
+                
+                <div class="mt-8 flex gap-6">
+                    <div class="text-center bg-white/5 p-4 rounded-3xl border border-white/5 min-w-[100px]">
+                        <p class="text-[10px] text-gray-500 font-bold uppercase">Required GPA</p>
+                        <p class="text-xl font-bold text-gold">{{ scholarship.min_gpa }}</p>
+                    </div>
+                    <div class="text-center bg-white/5 p-4 rounded-3xl border border-white/5 min-w-[100px]">
+                        <p class="text-[10px] text-gray-500 font-bold uppercase">Your GPA</p>
+                        <p class="text-xl font-bold text-white">{{ profile.gpa }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass p-8 rounded-[40px] border border-white/10">
+                <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-3">
+                    <i class="fas fa-paperclip text-gold"></i> Attached Documents
+                </h3>
+                <div class="space-y-4">
+                    {% for doc in vault %}
+                        {% if doc.is_verified %}
+                        <div class="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/5">
+                            <div class="flex items-center gap-4">
+                                <div class="text-gold text-xl"><i class="fas fa-file-check"></i></div>
+                                <div>
+                                    <p class="text-sm font-bold text-white">{{ doc.get_doc_type_display }}</p>
+                                    <p class="text-[10px] text-gray-500">Verified & Ready</p>
+                                </div>
+                            </div>
+                            <span class="text-[10px] bg-green-500/20 text-green-400 px-3 py-1 rounded-full font-bold">ATTACHED</span>
+                        </div>
+                        {% endif %}
+                    {% empty %}
+                        <div class="p-8 text-center border-2 border-dashed border-white/10 rounded-3xl">
+                            <p class="text-gray-500 text-sm">Ma jiraan dukumintiyo la xaqiijiyay oo diyaar ah.</p>
+                            <a href="{% url 'vault' %}" class="text-gold text-xs font-bold mt-2 inline-block">Upload to Vault</a>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="space-y-6">
+            <div class="glass p-8 rounded-[40px] border border-gold/30 bg-gradient-to-b from-gold/5 to-transparent sticky top-24">
+                <h3 class="text-xl font-bold text-white mb-4 tracking-tighter">Ready to Apply?</h3>
+                <p class="text-sm text-gray-400 mb-8 leading-relaxed">
+                    Markaad gujiso "Submit", nidaamka ScholarAI wuxuu si otomaatig ah u diri doonaa Profile-kaaga iyo dhamaan dukumintiyada ku lifaaqan.
+                </p>
+                
+                <form action="{% url 'submit_application' scholarship.id %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="w-full py-5 bg-gold hover:bg-yellow-500 text-black font-black rounded-3xl transition-all shadow-[0_0_30px_rgba(212,175,55,0.4)] hover:scale-[1.02] active:scale-95 mb-4 uppercase tracking-widest text-sm">
+                        Confirm & Submit
+                    </button>
+                </form>
+                
+                <a href="{% url 'dashboard' %}" class="block text-center text-xs text-gray-500 hover:text-white transition font-bold uppercase tracking-widest">
+                    Cancel Process
+                </a>
+
+                <div class="mt-8 pt-8 border-t border-white/5">
+                    <div class="flex items-center gap-3 text-[10px] text-gray-500 font-bold uppercase tracking-widest">
+                        <i class="fas fa-shield-check text-gold"></i>
+                        Secure Neural Submission
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    .glass {
+        background: rgba(18, 18, 18, 0.8);
+        backdrop-filter: blur(20px);
+    }
+    .text-gold { color: #D4AF37; }
+    .bg-gold { background-color: #D4AF37; }
+    .border-gold\/20 { border-color: rgba(212, 175, 55, 0.2); }
+</style>
+{% endblock %}

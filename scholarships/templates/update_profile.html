@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="so">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Profile | ScholarAI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #050505; color: #e5e7eb; }
+        .gold-border { border-color: #d4af37; }
+        .gold-text { color: #d4af37; }
+        .gold-btn { background-color: #d4af37; color: #050505; }
+        .gold-btn:hover { background-color: #b8962e; }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-6">
+
+    <div class="max-w-2xl w-full bg-[#111] border gold-border rounded-2xl p-8 shadow-2xl">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold gold-text">Cusubaysii Profile-kaaga</h1>
+            <p class="text-gray-400 mt-2">Buuxi macluumaadka si AI-gu kuugu soo saaro deeqaha ku habboon.</p>
+        </div>
+
+        <form method="POST" enctype="multipart/form-data" class="space-y-6">
+            {% csrf_token %}
+            
+            <div class="flex flex-col items-center mb-6">
+                <div class="w-24 h-24 rounded-full border-2 gold-border overflow-hidden bg-gray-800 mb-3">
+                    {% if profile.profile_pic %}
+                        <img src="{{ profile.profile_pic.url }}" class="w-full h-full object-cover">
+                    {% else %}
+                        <div class="flex items-center justify-center h-full text-gray-500">No Image</div>
+                    {% endif %}
+                </div>
+                <input type="file" name="profile_pic" class="text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-800 file:text-gold-text">
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium mb-2">Magaca Dhammaystiran</label>
+                    <input type="text" name="full_name" value="{{ profile.full_name }}" placeholder="Magacaaga..." 
+                        class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 focus:outline-none focus:border-[#d4af37]">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-2">GPA (0.0 - 4.0)</label>
+                    <input type="number" step="0.1" name="gpa" value="{{ profile.gpa }}" placeholder="Tusaale: 3.8"
+                        class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 focus:outline-none focus:border-[#d4af37]">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-2">Takhasuska (Field)</label>
+                    <input type="text" name="interested_field" value="{{ profile.interested_field }}" placeholder="Tusaale: Computer Science"
+                        class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 focus:outline-none focus:border-[#d4af37]">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-2">Dalka aad doorbidayso</label>
+                    <input type="text" name="preferred_country" value="{{ profile.preferred_country }}" placeholder="Tusaale: Turkey"
+                        class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 focus:outline-none focus:border-[#d4af37]">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium mb-2">Bio / Warbixin Kooban</label>
+                <textarea name="bio" rows="3" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 focus:outline-none focus:border-[#d4af37]">{{ profile.bio }}</textarea>
+            </div>
+
+            <div class="flex gap-4 pt-4">
+                <button type="submit" class="flex-1 gold-btn font-bold py-3 rounded-lg transition shadow-lg">
+                    SAVE CHANGES
+                </button>
+                <a href="{% url 'dashboard' %}" class="flex-1 bg-gray-800 text-center font-bold py-3 rounded-lg hover:bg-gray-700 transition">
+                    CANCEL
+                </a>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>

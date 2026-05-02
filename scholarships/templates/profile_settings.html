@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="so">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Settings | ScholarAI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        body {
+            background-color: #050505;
+            color: white;
+            font-family: 'Inter', sans-serif;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 24px;
+        }
+        .gold-text {
+            color: #D4AF37;
+        }
+        .font-heavy {
+            font-weight: 800;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-6">
+
+<div class="max-w-2xl mx-auto glass-panel p-10 mt-10 shadow-2xl">
+    <div class="text-center mb-8">
+        <div class="relative w-24 h-24 mx-auto mb-4 group">
+            <div class="w-full h-full rounded-full border-2 border-[#D4AF37] overflow-hidden bg-black/40 shadow-[0_0_15px_rgba(212,175,55,0.3)]">
+                {% if profile.profile_pic %}
+                    <img src="{{ profile.profile_pic.url }}" id="preview" class="w-full h-full object-cover">
+                {% else %}
+                    <div class="flex items-center justify-center h-full text-gray-600 text-xs italic">NO IMG</div>
+                {% endif %}
+            </div>
+            <form method="POST" enctype="multipart/form-data" id="profileForm" class="space-y-6">
+                {% csrf_token %}
+                <label class="absolute bottom-0 right-0 bg-[#D4AF37] p-2 rounded-full cursor-pointer shadow-lg hover:scale-110 transition">
+                    <i class="fas fa-camera text-black text-xs"></i>
+                    <input type="file" class="hidden" name="profile_pic" onchange="previewImage(this)">
+                </label>
+        </div>
+        <h2 class="text-xl font-heavy italic uppercase tracking-wider">Hagaaji Profile-kaaga</h2>
+        <p class="text-[10px] text-gray-500 font-heavy tracking-widest mt-2 uppercase">
+            Buuxi xogtaada si AI-gu kuugu soo saaro deeqaha ugu habboon.
+        </p>
+    </div>
+
+    <div class="space-y-6">
+        <div>
+            <label class="text-[9px] font-heavy gold-text tracking-[0.2em] uppercase">Magacaaga oo Dhammaystiran</label>
+            <input type="text" name="full_name" value="{{ profile.full_name }}" 
+                placeholder="Magacaaga oo dhammaystiran"
+                class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-sm focus:border-[#D4AF37] outline-none mt-2 transition text-white">
+        </div>
+
+        <div>
+            <label class="text-[9px] font-heavy gold-text tracking-[0.2em] uppercase">GPA-gaaga (0.0 - 4.0)</label>
+            <input type="number" step="0.1" name="gpa" value="{{ profile.gpa }}" 
+                placeholder="0.0"
+                class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-sm focus:border-[#D4AF37] outline-none mt-2 transition text-white">
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label class="text-[9px] font-heavy gold-text tracking-[0.2em] uppercase">Takhasuska (Field)</label>
+                <input type="text" name="interested_field" value="{{ profile.interested_field }}" 
+                    placeholder="Tusaale: IT"
+                    class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-sm focus:border-[#D4AF37] outline-none mt-2 transition text-white">
+            </div>
+
+            <div>
+                <label class="text-[9px] font-heavy gold-text tracking-[0.2em] uppercase">Dalka aad doorbidayso</label>
+                <input type="text" name="preferred_country" value="{{ profile.preferred_country }}" 
+                    placeholder="Dalka aad rabto"
+                    class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-sm focus:border-[#D4AF37] outline-none mt-2 transition text-white">
+            </div>
+        </div>
+
+        <button type="submit" class="w-full bg-[#D4AF37] text-black font-heavy p-4 rounded-xl hover:bg-yellow-500 transition shadow-[0_0_20px_rgba(212,175,55,0.4)] uppercase tracking-widest mt-4">
+            SAVE CALIBRATION
+        </button>
+        
+        <div class="text-center mt-4">
+            <a href="{% url 'dashboard' %}" class="text-[10px] text-gray-500 hover:text-white transition uppercase font-heavy">Back to Dashboard</a>
+        </div>
+    </form>
+</div>
+
+<script>
+    function previewImage(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('preview').src = e.target.result;
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+
+</body>
+</html>

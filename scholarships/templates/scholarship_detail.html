@@ -1,0 +1,100 @@
+{% extends 'base.html' %} 
+{% block content %}
+<div class="master-container" style="background: #020202; min-height: 100vh; padding: 40px;">
+    
+    <div class="max-w-5xl mx-auto">
+        <a href="{% url 'matches' %}" class="text-[10px] font-heavy text-gray-500 hover:text-[#D4AF37] mb-8 block tracking-widest italic uppercase transition">
+            <i class="fas fa-arrow-left mr-2"></i> Back to Neural Matches
+        </a>
+
+        <div class="glass-panel p-12 border-[#D4AF37]/20 relative overflow-hidden" style="background: rgba(15,15,15,0.6); backdrop-filter: blur(40px); border-radius: 24px; border: 1px solid rgba(212, 175, 55, 0.15);">
+            
+            <div class="absolute top-10 right-10 w-16 h-16 bg-black border border-[#D4AF37]/30 rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(212,175,55,0.1)]">
+                <i class="fas fa-robot gold-text text-2xl"></i>
+            </div>
+
+            <div class="mb-10">
+                <span class="text-[10px] font-heavy text-[#D4AF37] tracking-[0.5em] uppercase italic">Neural Match Analysis</span>
+                <h1 class="text-6xl font-heavy italic gold-text mt-4 leading-tight uppercase">{{ scholarship.title }}</h1>
+                <p class="text-xl text-gray-400 font-bold mt-2 italic">{{ scholarship.country }} • {{ scholarship.degree_level }}</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div class="bg-black/40 p-8 rounded-2xl border border-white/5">
+                    <p class="text-[10px] text-gray-500 font-heavy mb-2 uppercase tracking-widest">Required GPA</p>
+                    <p class="text-3xl font-heavy italic">{{ scholarship.required_gpa }}</p>
+                </div>
+                <div class="bg-black/40 p-8 rounded-2xl border border-[#D4AF37]/20 shadow-[inset_0_0_20px_rgba(212,175,55,0.05)]">
+                    <p class="text-[10px] text-gray-500 font-heavy mb-2 uppercase tracking-widest">Your GPA</p>
+                    <p class="text-3xl font-heavy italic gold-text">{{ profile.gpa }}</p>
+                </div>
+                <div class="bg-black/40 p-8 rounded-2xl border border-white/5 text-center">
+                    <p class="text-[10px] text-gray-500 font-heavy mb-2 uppercase tracking-widest">Match Score</p>
+                    <p class="text-3xl font-heavy italic text-green-500">98%</p>
+                </div>
+            </div>
+
+            <div class="mb-12 border-t border-white/5 pt-10">
+                <h3 class="text-white font-heavy text-sm tracking-widest italic uppercase mb-8">/ Premium Benefits Included</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="glass-panel p-4 bg-white/5 border-white/5 text-center group transition hover:border-[#D4AF37]/30">
+                        <div class="h-32 w-full rounded-xl overflow-hidden mb-4 grayscale group-hover:grayscale-0 transition duration-500">
+                            <img src="https://images.unsplash.com/photo-1543353071-097079c19b0d?q=80&w=400" class="w-full h-full object-cover">
+                        </div>
+                        <i class="fas fa-utensils gold-text mb-2"></i>
+                        <p class="text-[10px] font-heavy italic">DAILY MEALS</p>
+                        <p class="text-[9px] text-gray-500 uppercase tracking-tighter">Fully Covered</p>
+                    </div>
+
+                    <div class="glass-panel p-4 bg-white/5 border-white/5 text-center group transition hover:border-[#D4AF37]/30">
+                        <div class="h-32 w-full rounded-xl overflow-hidden mb-4 grayscale group-hover:grayscale-0 transition duration-500">
+                            <img src="https://images.unsplash.com/photo-1555854817-5b2260d1bd63?q=80&w=400" class="w-full h-full object-cover">
+                        </div>
+                        <i class="fas fa-bed gold-text mb-2"></i>
+                        <p class="text-[10px] font-heavy italic">DORMITORY</p>
+                        <p class="text-[9px] text-gray-500 uppercase tracking-tighter">Premium Housing</p>
+                    </div>
+
+                    <div class="glass-panel p-4 bg-white/5 border-white/5 text-center group transition hover:border-[#D4AF37]/30">
+                        <div class="h-32 w-full rounded-xl overflow-hidden mb-4 grayscale group-hover:grayscale-0 transition duration-500">
+                            <img src="https://images.unsplash.com/photo-1541339907198-e08759df9a73?q=80&w=400" class="w-full h-full object-cover">
+                        </div>
+                        <i class="fas fa-university gold-text mb-2"></i>
+                        <p class="text-[10px] font-heavy italic">TUITION FEE</p>
+                        <p class="text-[9px] text-gray-500 uppercase tracking-tighter">100% Scholarship</p>
+                    </div>
+
+                    <div class="glass-panel p-4 bg-white/5 border-white/5 text-center group transition hover:border-[#D4AF37]/30">
+                        <div class="h-32 w-full rounded-xl overflow-hidden mb-4 grayscale group-hover:grayscale-0 transition duration-500">
+                            <img src="https://images.unsplash.com/photo-1580519542036-c47de6196ba5?q=80&w=400" class="w-full h-full object-cover">
+                        </div>
+                        <i class="fas fa-wallet gold-text mb-2"></i>
+                        <p class="text-[10px] font-heavy italic">MONTHLY STIPEND</p>
+                        <p class="text-[9px] text-gray-500 uppercase tracking-tighter">Living Allowance</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-6 text-gray-400 italic leading-relaxed mb-12 border-t border-white/5 pt-10">
+                <h3 class="text-white font-heavy text-sm tracking-widest italic uppercase">/ Scholarship Overview</h3>
+                <p>{{ scholarship.description }}</p>
+            </div>
+
+            {% if eligible %}
+                <a href="{% url 'checkout' scholarship.id %}" class="block text-center bg-[#D4AF37] text-black font-heavy italic py-5 rounded-xl text-sm tracking-[0.2em] hover:shadow-[0_0_50px_rgba(212,175,55,0.4)] transition duration-500 uppercase">
+                    Initialize Elite Application Process
+                </a>
+            {% else %}
+                <div class="bg-red-500/10 border border-red-500/20 text-red-500 p-6 rounded-xl text-center">
+                    <p class="font-heavy italic text-[11px] uppercase tracking-widest mb-1">Ineligible: GPA Threshold Not Met</p>
+                    <p class="text-[9px] opacity-70">Your GPA of {{ profile.gpa }} is below the required {{ scholarship.required_gpa }} for this program.</p>
+                </div>
+            {% endif %}
+
+        </div>
+        
+        <p class="text-center text-[9px] text-gray-600 mt-8 tracking-[0.5em] uppercase font-heavy">System Secure Node: {{ system_version }}</p>
+    </div>
+</div>
+{% endblock %}

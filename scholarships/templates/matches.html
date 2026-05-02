@@ -1,0 +1,106 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="so">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScholarAI | Explore Matches</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        :root { --gold: #D4AF37; --bg: #020202; }
+        body { background: var(--bg); color: white; font-family: 'Inter', sans-serif; }
+        .glass { background: rgba(15, 15, 15, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(212, 175, 55, 0.1); border-radius: 20px; }
+        .font-pro { font-weight: 900; font-style: italic; text-transform: uppercase; }
+        
+        /* Hover Animation */
+        .scholarship-card:hover {
+            border-color: rgba(212, 175, 55, 0.4);
+            transform: translateY(-5px);
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="p-6">
+
+    <nav class="flex justify-between items-center mb-10 px-4">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 border-2 border-[#D4AF37] rotate-45 flex items-center justify-center">
+                <div class="w-3 h-3 bg-[#D4AF37]"></div>
+            </div>
+            <h1 class="text-xl font-pro tracking-tighter">Scholar<span class="text-[#D4AF37]">AI</span></h1>
+        </div>
+        <div class="flex items-center gap-6">
+            <a href="{% url 'dashboard' %}" class="text-[10px] font-pro text-gray-500 hover:text-[#D4AF37]">Dashboard</a>
+            <a href="{% url 'matches' %}" class="text-[10px] font-pro text-[#D4AF37]">Matches</a>
+            <div class="w-10 h-10 rounded-xl border border-[#D4AF37]/30 p-1">
+                <img src="https://ui-avatars.com/api/?name={{ request.user.username }}&background=D4AF37&color=000" class="rounded-lg w-full h-full">
+            </div>
+        </div>
+    </nav>
+
+    <div class="glass p-6 mb-8 flex flex-wrap gap-4 items-center justify-between">
+        <div class="relative flex-1 min-w-[300px]">
+            <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-xs"></i>
+            <input type="text" placeholder="Search scholarships by name or country..." class="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-12 text-xs outline-none focus:border-[#D4AF37]/50">
+        </div>
+        <div class="flex gap-3">
+            <select class="bg-black border border-white/10 rounded-xl px-4 py-2 text-[10px] font-pro text-gray-400 outline-none">
+                <option>All Degrees</option>
+                <option>Bachelor</option>
+                <option>Master</option>
+                <option>PhD</option>
+            </select>
+            <button class="bg-[#D4AF37] text-black px-6 py-2 rounded-xl text-[10px] font-pro">Filter</button>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+        {% for match in matches %}
+        <div class="glass p-6 scholarship-card group relative overflow-hidden">
+            <div class="flex justify-between items-start mb-6">
+                <div class="w-12 h-12 glass flex items-center justify-center text-[#D4AF37] rounded-xl border-white/5">
+                    <i class="fas fa-university text-xl"></i>
+                </div>
+                <span class="bg-[#D4AF37]/10 text-[#D4AF37] text-[9px] font-pro px-3 py-1 rounded-full italic tracking-widest">
+                    {% if profile.gpa >= "3.5" %}98% Match{% else %}85% Match{% endif %}
+                </span>
+            </div>
+
+            <h3 class="text-sm font-pro italic mb-2 tracking-tight text-white group-hover:text-[#D4AF37] transition">
+                {{ match.title }}
+            </h3>
+            <p class="text-[10px] text-gray-500 mb-6 font-bold uppercase tracking-tighter">
+                {{ match.country|default:"Global" }} • {{ match.category|default:"International" }} • Fully Funded
+            </p>
+            
+            <div class="flex items-center justify-between border-t border-white/5 pt-4 mb-6">
+                <div class="text-[9px] text-gray-500 uppercase">Deadline: <span class="text-white">{{ match.deadline|date:"M d, Y"|default:"Open" }}</span></div>
+                <a href="{% url 'scholarship_detail' match.id %}" class="text-[9px] font-pro text-gray-400 hover:text-white">
+                    Details <i class="fas fa-external-link-alt ml-1"></i>
+                </a>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <a href="{% url 'scholarship_detail' match.id %}" class="text-center py-3 border border-white/10 rounded-xl text-[9px] font-pro text-gray-400 hover:border-white transition">
+                    Review
+                </a>
+                <a href="{% url 'checkout' match.id %}" class="text-center py-3 bg-[#D4AF37] rounded-xl text-[9px] font-pro text-black hover:bg-white transition shadow-[0_5px_15px_rgba(212,175,55,0.2)]">
+                    Pay & Apply <i class="fas fa-bolt ml-1"></i>
+                </a>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-span-full py-20 text-center glass border-dashed">
+            <i class="fas fa-satellite-dish text-gray-800 text-5xl mb-4"></i>
+            <h4 class="text-xl font-pro italic text-gray-700">No Records Found</h4>
+            <p class="text-[10px] text-gray-800 uppercase font-black tracking-[0.4em]">Neural sync required</p>
+        </div>
+        {% endfor %}
+
+    </div>
+
+</body>
+</html>

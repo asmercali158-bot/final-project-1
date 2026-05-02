@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5 mt-5 text-center">
+    <div class="glass p-5 border-success d-inline-block shadow-lg">
+        <div class="mb-4">
+            <i class="fas fa-check-circle fa-5x text-success animate__animated animate__bounceIn"></i>
+        </div>
+        <h1 class="fw-bold text-white mb-3">Lacag bixintu way Guulaysatay!</h1>
+        <p class="text-muted mb-4">Hambalyo! Hadda waxaad tahay <span class="text-primary fw-bold">Elite Pro Member</span>.<br> Dhammaan awoodihii AI-ga ee V20 hadda way kuu furan yihiin.</p>
+        
+        <div class="d-grid gap-2">
+            <a href="{% url 'dashboard' %}" class="btn btn-launch rounded-pill py-3">Back to Dashboard 🚀</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
